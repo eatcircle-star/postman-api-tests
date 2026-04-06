@@ -1,0 +1,44 @@
+# .github/workflows/api-tests.yml
+
+name: API Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 — check out your repo files
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2 — install Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Step 3 — install Newman and HTML reporter
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      # Step 4 — run your Postman collection
+      - name: Run API tests
+        run: |
+          newman run collections/RegressionSuite.json \
+            -e environments/environment.json \
+            -r htmlextra \
+            --reporter-htmlextra-export results/report.html
+
+      # Step 5 — upload HTML report as artifact
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: api-test-report
+          path: results/report.html

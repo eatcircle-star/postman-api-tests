@@ -1,0 +1,6 @@
+userId,expectedName,expectedStatus
+1,Leanne Graham,200
+2,Ervin Howell,200
+3,Clementine Bauch,200
+9999,,404
+-1,,404

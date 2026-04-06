@@ -1,0 +1,310 @@
+{
+  "info": {
+    "_postman_id": "b7252526-a2a5-4ccd-8d40-fcb464753623",
+    "name": "Regression Suite",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "16299661"
+  },
+  "item": [
+    {
+      "name": "Posts API",
+      "item": [
+        {
+          "name": "GET Posts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status is 200\", () =>\r",
+                  "  pm.expect(pm.response.code).to.equal(200));\r",
+                  "\r",
+                  "pm.test(\"Returns an array\", () =>\r",
+                  "  pm.expect(json).to.be.an(\"array\"));\r",
+                  "\r",
+                  "pm.test(\"Array is not empty\", () =>\r",
+                  "  pm.expect(json.length).to.be.above(0));\r",
+                  "\r",
+                  "pm.test(\"Each post has required fields\", () => {\r",
+                  "  pm.expect(json[0]).to.have.property(\"id\");\r",
+                  "  pm.expect(json[0]).to.have.property(\"title\");\r",
+                  "  pm.expect(json[0]).to.have.property(\"userId\");\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response under 1000ms\", () =>\r",
+                  "  pm.expect(pm.response.responseTime).to.be.below(1000)); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"Test\",\"body\":\"Hello\",\"userId\":1}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET SinglePost",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status is 200\", () =>\r",
+                  "  pm.expect(pm.response.code).to.equal(200));\r",
+                  "\r",
+                  "pm.test(\"id is correct\", () =>\r",
+                  "  pm.expect(json.id).to.equal(1));\r",
+                  "\r",
+                  "pm.test(\"title is a string\", () =>\r",
+                  "  pm.expect(json.title).to.be.a(\"string\"));\r",
+                  "\r",
+                  "pm.test(\"userId is a number\", () =>\r",
+                  "  pm.expect(json.userId).to.be.a(\"number\")); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"Test\",\"body\":\"Hello\",\"userId\":1}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 404 for invalid id\", () =>\r",
+                  "  pm.expect(pm.response.code).to.equal(404));\r",
+                  "\r",
+                  "pm.test(\"Body is empty object\", () => {\r",
+                  "  const json = pm.response.json();\r",
+                  "  pm.expect(json).to.deep.equal({});\r",
+                  "}); "
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"Test\",\"body\":\"Hello\",\"userId\":1}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts/9999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "posts",
+                "9999"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users API",
+      "item": [
+        {
+          "name": "GET all Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();\r",
+                  "\r",
+                  "pm.test(\"Status is 200\", () =>\r",
+                  "  pm.expect(pm.response.code).to.equal(200));\r",
+                  "\r",
+                  "pm.test(\"Returns 10 users\", () =>\r",
+                  "  pm.expect(json.length).to.equal(10));\r",
+                  "\r",
+                  "pm.test(\"User has email field\", () =>\r",
+                  "  pm.expect(json[0]).to.have.property(\"email\"));\r",
+                  "\r",
+                  "pm.test(\"Email contains @ symbol\", () =>\r",
+                  "  pm.expect(json[0].email).to.include(\"@\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"Test\",\"body\":\"Hello\",\"userId\":1}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET single User",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"Test\",\"body\":\"Hello\",\"userId\":1}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comments API",
+      "item": [
+        {
+          "name": "GET comments",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"title\":\"Test\",\"body\":\"Hello\",\"userId\":1}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/posts/1/comments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "posts",
+                "1",
+                "comments"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
