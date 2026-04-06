@@ -80,7 +80,7 @@
                   "const json = pm.response.json();\r",
                   "\r",
                   "pm.test(\"Status is 200\", () =>\r",
-                  "  pm.expect(pm.response.code).to.equal(200));\r",
+                  "  pm.expect(pm.response.code).to.equal(999));\r",
                   "\r",
                   "pm.test(\"id is correct\", () =>\r",
                   "  pm.expect(json.id).to.equal(1));\r",
